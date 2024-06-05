@@ -1,11 +1,60 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Spring Security Example</title>
+    <meta charset="UTF-8">
+    <title>User Management</title>
 </head>
 <body>
-<h1>User, welcome spring boot security page!</h1>
 
+<h1>User Management</h1>
+
+<!-- Форма для добавления нового пользователя -->
+<form action="#" th:action="@{/admin/users/add}" method="post">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required>
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required>
+    <button type="submit">Add User</button>
+</form>
+
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="Logout">
+</form>
+
+
+<!-- Таблица для отображения списка пользователей -->
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Используем Thymeleaf для отображения списка пользователей -->
+    <tr th:each="user : ${users}">
+        <td th:text="${user.id}"></td>
+        <td th:text="${user.name}"></td>
+        <td th:text="${user.email}"></td>
+        <td>
+            <!-- Форма для удаления пользователя -->
+            <form action="#" th:action="@{/admin/users/delete}" method="post">
+                <input type="hidden" name="id" th:value="${user.id}">
+                <button type="submit">Delete</button>
+            </form>
+            <!-- Форма для обновления информации о пользователе -->
+            <form action="#" th:action="@{/admin/users/update}" method="post">
+                <input type="hidden" name="id" th:value="${user.id}">
+                <input type="text" name="name" th:value="${user.name}">
+                <input type="email" name="email" th:value="${user.email}">
+                <button type="submit">Update</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
 
 </body>
 </html>
