@@ -9,5 +9,5 @@ public interface UserService {
     void addUser(User user);
     void updateUser(User user);
     void deleteUser(Long id);
-    User findByEmail(String email); // Новый метод
+    User findByEmail(String email);
 }

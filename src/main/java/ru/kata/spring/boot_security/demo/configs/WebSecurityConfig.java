@@ -17,7 +17,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final SuccessUserHandler successUserHandler;
     private final UserDetailsServiceImpl userDetailsService;
 
-    public WebSecurityConfig(SuccessUserHandler successUserHandler, UserDetailsServiceImpl userDetailsService) {
+    public WebSecurityConfig(SuccessUserHandler successUserHandler,
+                             UserDetailsServiceImpl userDetailsService) {
         this.successUserHandler = successUserHandler;
         this.userDetailsService = userDetailsService;
     }
