@@ -20,6 +20,10 @@
     <button type="submit">Add User</button>
 </form>
 
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="Logout">
+</form>
+
 <!-- Таблица для отображения списка пользователей -->
 <table border="1">
     <thead>
@@ -56,9 +60,6 @@
                 <button type="submit">Update</button>
             </form>
 
-            <form th:action="@{/logout}" method="post">
-                <input type="submit" value="Logout">
-            </form>
 
         </td>
     </tr>
