@@ -13,7 +13,7 @@ import ru.kata.spring.boot_security.demo.example.service.UserService;
 import java.util.List;
 
 @Controller
-@RequestMapping("/admin/users")
+@RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
@@ -31,20 +31,23 @@ public class UserController {
     }
 
     @PostMapping("/add")
-    public String addUser(@RequestParam("name") String name, @RequestParam("email") String email) {
-        userService.addUser(new User(name, email));
-        return "redirect:/admin/users";
+    public String addUser(@RequestParam("name") String name, @RequestParam("email") String email, @RequestParam("password") String password) {
+        userService.addUser(new User(name, email, password));
+        return "redirect:/users";
     }
 
     @PostMapping("/delete")
     public String deleteUser(@RequestParam("id") Long id) {
         userService.deleteUser(id);
-        return "redirect:/admin/users";
+        return "redirect:/users";
     }
 
     @PostMapping("/update")
-    public String updateUser(@RequestParam("id") Long id, @RequestParam("name") String name, @RequestParam("email") String email) {
-        userService.updateUser(new User(id, name, email));
-        return "redirect:/admin/users";
+    public String updateUser(@RequestParam("id") Long id,
+                             @RequestParam("name") String name,
+                             @RequestParam("email") String email,
+                             @RequestParam("password") String password) {
+        userService.updateUser(new User(id, name, email, password));
+        return "redirect:/users";
     }
 }

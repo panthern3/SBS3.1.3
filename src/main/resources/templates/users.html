@@ -9,18 +9,16 @@
 <h1>User Management</h1>
 
 <!-- Форма для добавления нового пользователя -->
-<form action="#" th:action="@{/admin/users/add}" method="post">
+<form action="#" th:action="@{/users/add}" method="post">
     <label for="name">Name:</label>
     <input type="text" id="name" name="name" required>
     <label for="email">Email:</label>
     <input type="email" id="email" name="email" required>
+    <!-- Добавляем поле для пароля -->
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required>
     <button type="submit">Add User</button>
 </form>
-
-<form th:action="@{/logout}" method="post">
-    <input type="submit" value="Logout">
-</form>
-
 
 <!-- Таблица для отображения списка пользователей -->
 <table border="1">
@@ -29,6 +27,8 @@
         <th>ID</th>
         <th>Name</th>
         <th>Email</th>
+        <!-- Добавляем заголовок для пароля -->
+        <th>Password</th>
         <th>Actions</th>
     </tr>
     </thead>
@@ -38,19 +38,28 @@
         <td th:text="${user.id}"></td>
         <td th:text="${user.name}"></td>
         <td th:text="${user.email}"></td>
+        <!-- Выводим пароль пользователя -->
+        <td th:text="${user.password}"></td>
         <td>
             <!-- Форма для удаления пользователя -->
-            <form action="#" th:action="@{/admin/users/delete}" method="post">
+            <form action="#" th:action="@{/users/delete}" method="post">
                 <input type="hidden" name="id" th:value="${user.id}">
                 <button type="submit">Delete</button>
             </form>
             <!-- Форма для обновления информации о пользователе -->
-            <form action="#" th:action="@{/admin/users/update}" method="post">
+            <form action="#" th:action="@{/users/update}" method="post">
                 <input type="hidden" name="id" th:value="${user.id}">
                 <input type="text" name="name" th:value="${user.name}">
                 <input type="email" name="email" th:value="${user.email}">
+                <!-- Добавляем поле для пароля -->
+                <input type="password" name="password" th:value="${user.password}">
                 <button type="submit">Update</button>
             </form>
+
+            <form th:action="@{/logout}" method="post">
+                <input type="submit" value="Logout">
+            </form>
+
         </td>
     </tr>
     </tbody>

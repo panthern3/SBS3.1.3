@@ -12,5 +12,9 @@
 <p>Name: <span th:text="${user.name}"></span></p>
 <p>Email: <span th:text="${user.email}"></span></p>
 
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="Logout">
+</form>
+
 </body>
 </html>
