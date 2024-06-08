@@ -1,49 +1,84 @@
 package ru.kata.spring.boot_security.demo.example.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.kata.spring.boot_security.demo.example.dao.UserDao;
+import ru.kata.spring.boot_security.demo.services.RoleRepository;
+import ru.kata.spring.boot_security.demo.services.UserRepository;
+import ru.kata.spring.boot_security.demo.example.model.Role;
 import ru.kata.spring.boot_security.demo.example.model.User;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-    private final UserDao userDao;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserDao userDao) {
-        this.userDao = userDao;
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public List<User> getAllUsers() {
-        return userDao.getAllUsers();
-    }
-
-    @Override
-    public void addUser(User user) {
-        userDao.addUser(user);
+    public void addUser(User user, Set<Role> roles) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        Set<Role> persistentRoles = new HashSet<>();
+        for (Role role : roles) {
+            Role persistentRole = roleRepository.findByName(role.getName());
+            if (persistentRole == null) {
+                persistentRole = roleRepository.save(role);
+            }
+            persistentRoles.add(persistentRole);
+        }
+        user.setRoles(persistentRoles);
+        userRepository.save(user);
     }
 
     @Override
     @Transactional
-    public void updateUser(User user) {
-        userDao.updateUser(user);
+    public void updateUser(User user, Set<Role> roles) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        Set<Role> persistentRoles = new HashSet<>();
+        for (Role role : roles) {
+            Role persistentRole = roleRepository.findByName(role.getName());
+            if (persistentRole == null) {
+                persistentRole = roleRepository.save(role);
+            }
+            persistentRoles.add(persistentRole);
+        }
+        user.setRoles(persistentRoles);
+        userRepository.save(user);
     }
 
     @Override
     @Transactional
     public void deleteUser(Long id) {
-        userDao.deleteUser(id);
+        userRepository.deleteById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public User findById(Long id) {
+        return userRepository.findById(id).orElse(null);
     }
 
     @Override
     @Transactional(readOnly = true)
     public User findByEmail(String email) {
-        return userDao.findByEmail(email);
+        return userRepository.findByEmail(email);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 }

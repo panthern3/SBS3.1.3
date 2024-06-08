@@ -17,6 +17,12 @@
     <!-- Добавляем поле для пароля -->
     <label for="password">Password:</label>
     <input type="password" id="password" name="password" required>
+    <!-- Добавляем поле для выбора ролей -->
+    <label for="roles">Roles:</label>
+    <select id="roles" name="roles" multiple>
+        <option value="ROLE_USER">USER</option>
+        <option value="ROLE_ADMIN">ADMIN</option>
+    </select>
     <button type="submit">Add User</button>
 </form>
 
@@ -33,6 +39,7 @@
         <th>Email</th>
         <!-- Добавляем заголовок для пароля -->
         <th>Password</th>
+        <th>Roles</th>
         <th>Actions</th>
     </tr>
     </thead>
@@ -44,6 +51,7 @@
         <td th:text="${user.email}"></td>
         <!-- Выводим пароль пользователя -->
         <td th:text="${user.password}"></td>
+        <td th:text="${#strings.arrayJoin(user.roles.toArray(), ', ')}"></td>
         <td>
             <!-- Форма для удаления пользователя -->
             <form action="#" th:action="@{/users/delete}" method="post">
@@ -57,10 +65,13 @@
                 <input type="email" name="email" th:value="${user.email}">
                 <!-- Добавляем поле для пароля -->
                 <input type="password" name="password" th:value="${user.password}">
+                <!-- Добавляем поле для выбора ролей -->
+                <select name="roles" multiple>
+                    <option value="ROLE_USER" th:checked="${user.roles.contains('ROLE_USER')}">USER</option>
+                    <option value="ROLE_ADMIN" th:checked="${user.roles.contains('ROLE_ADMIN')}">ADMIN</option>
+                </select>
                 <button type="submit">Update</button>
             </form>
-
-
         </td>
     </tr>
     </tbody>
