@@ -51,7 +51,7 @@
         <td th:text="${user.email}"></td>
         <!-- Выводим пароль пользователя -->
         <td th:text="${user.password}"></td>
-        <td th:text="${#strings.arrayJoin(user.roles.toArray(), ', ')}"></td>
+        <td th:text="${user.getRoleNames}"></td>
         <td>
             <!-- Форма для удаления пользователя -->
             <form action="#" th:action="@{/users/delete}" method="post">
